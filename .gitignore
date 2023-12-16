@@ -2,4 +2,6 @@ bin/*
 
 *.o
 
+cmake-build-debug/
+
 .DS_Store
