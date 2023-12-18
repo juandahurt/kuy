@@ -15,7 +15,7 @@ LD_FLAGS := -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -framework 
 SRC_FILES := $(wildcard src/*.cpp src/imgui/*.cpp src/imgui-SFML/*.cpp)
 OBJ_FILES := $(SRC_FILES:.cpp=.o)
 
-build: $(OUTPUT)
+all: $(OUTPUT)
 
 $(OUTPUT):$(OBJ_FILES) Makefile
 	$(CXX) $(OBJ_FILES) $(LD_FLAGS) -o ./bin/$@
