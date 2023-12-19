@@ -33,11 +33,11 @@ public:
     }
 };
 
-class CColission {
+class CCollision {
 public:
     float radius;
 
-    CColission(float r)
+    CCollision(float r)
         : radius (r) {}
 };
 
