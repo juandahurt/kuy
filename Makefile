@@ -4,7 +4,7 @@ CXX := g++
 OUTPUT := game
 
 # where SFML is located at
-SFML_DIR := ./src/sfml
+SFML_DIR := /opt/homebrew/Cellar/sfml/2.6.1
 
 # compiler and linker flags
 CXX_FLAGS := -std=c++20 -g
@@ -15,7 +15,7 @@ LD_FLAGS := -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -framework 
 SRC_FILES := $(wildcard src/*.cpp src/imgui/*.cpp src/imgui-SFML/*.cpp)
 OBJ_FILES := $(SRC_FILES:.cpp=.o)
 
-build: $(OUTPUT)
+all: $(OUTPUT)
 
 $(OUTPUT):$(OBJ_FILES) Makefile
 	$(CXX) $(OBJ_FILES) $(LD_FLAGS) -o ./bin/$@
