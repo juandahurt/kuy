@@ -4,7 +4,7 @@ CXX := g++
 OUTPUT := game
 
 # where SFML is located at
-SFML_DIR := /opt/homebrew/Cellar/sfml/2.6.1/
+SFML_DIR := /opt/homebrew/Cellar/sfml/2.6.1
 
 # compiler and linker flags
 CXX_FLAGS := -std=c++20 -g
