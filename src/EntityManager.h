@@ -1,5 +1,5 @@
 //
-// Created by Juan Hurtado on 18/12/23.
+// Created by Juan Hurtado on 19/12/23.
 //
 
 #ifndef KUY_ENTITYMANAGER_H
@@ -20,13 +20,14 @@ class EntityManager {
 
     void init();
 public:
-    EntityManager() {}
+    EntityManager();
 
     void update();
     std::shared_ptr<Entity> addEntity(std::string &tag);
-    EntityVec& entities() const;
-    EntityVec& entities(std::string &tag) const;
-    EntityMap& entitiesMap() const;
+    EntityVec& entities();
+    EntityVec& entities(std::string &tag);
+    EntityMap& entitiesMap();
 };
+
 
 #endif //KUY_ENTITYMANAGER_H

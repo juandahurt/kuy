@@ -10,11 +10,11 @@
 #include "EntityManager.h"
 
 class Game {
-    sf::RenderWindow _window;
-    bool _running;
-    bool _paused;
-    Entity _player;
-    EntityManager _entityManager;
+    sf::RenderWindow            _window;
+    bool                        _running;
+    bool                        _paused;
+    std::shared_ptr<Entity>     _player;
+    EntityManager               _entityManager;
 
     void _init();
     void _spawnPlayer();
