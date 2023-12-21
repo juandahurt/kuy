@@ -16,6 +16,7 @@ class Entity {
 public:
     Entity(const size_t i, std::string &t)
         : _id (i), _tag (t) {
+        _active = true;
     }
 
     std::shared_ptr<CTransform> cTransform;
@@ -26,8 +27,8 @@ public:
     std::shared_ptr<CLifespan> cLifespan;
 
     size_t id() const;
-    std::string& tag() const;
-    void isActive() const;
+    std::string& tag();
+    bool isActive() const;
     void destroy();
 };
 
