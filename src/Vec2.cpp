@@ -56,3 +56,13 @@ float Vec2::dist(const Vec2 &rhs) const {
     float dy = rhs.y - y;
     return sqrtf(dx * dx + dy * dy);
 }
+
+float Vec2::length() {
+    return sqrtf(x * x + y * y);
+}
+
+void Vec2::normalize() {
+    float l = length();
+    x = x / l;
+    y = y / l;
+}
