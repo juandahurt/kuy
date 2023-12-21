@@ -19,6 +19,8 @@ class EntityManager {
     size_t    _totalEntities;
 
     void init();
+    void _addNewEntities();
+    void _deleteDeadEntities();
 public:
     EntityManager();
 
