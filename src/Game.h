@@ -8,6 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "EntityManager.h"
+#include "imgui/imgui.h"
+#include "imgui-SFML/imgui-SFML.h"
 
 class Game {
     sf::RenderWindow            _window;
@@ -17,6 +19,7 @@ class Game {
     EntityManager               _entityManager;
     int                         _frameCount             = 0;
     int                         _lastFrameEnemySpawned  = 0;
+    sf::Clock                   _deltaClock;
 
     void _init();
     void _spawnPlayer();
@@ -27,6 +30,7 @@ class Game {
     void _spawnEnemy();
     void _sEnemySpawner();
     void _sCollision();
+    void _sGUI();
 public:
     Game();
 

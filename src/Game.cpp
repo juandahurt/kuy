@@ -11,8 +11,10 @@ Game::Game() {
 }
 
 void Game::_init() {
-    _window.create(sf::VideoMode(500, 500), "Test");
+    _entityManager = EntityManager();
+    _window.create(sf::VideoMode(1080, 720), "Test");
     _window.setFramerateLimit(60);
+    ImGui::SFML::Init(_window);
     _spawnPlayer();
 }
 
@@ -22,7 +24,7 @@ void Game::_spawnPlayer() {
     // transform component
     entity->cTransform = std::make_shared<CTransform>(Vec2(100, 50), Vec2(0, 0), 5);
     auto bgColor = sf::Color(100, 150, 100);
-    auto outlineColor = sf::Color(100, 100, 200);
+    auto outlineColor = sf::Color(100, 100, 200, 0);
     // shape component
     entity->cShape = std::make_shared<CShape>(10.0f, 5, bgColor, outlineColor, 2.0f);
     // input component
@@ -37,6 +39,7 @@ void Game::run() {
         _sEnemySpawner();
         _sMovement();
         _sCollision();
+        _sGUI();
         _sRender();
         _frameCount++;
     }
@@ -53,6 +56,7 @@ void Game::_sRender() {
             _window.draw(circle);
         }
     }
+    ImGui::SFML::Render(_window);
     _window.display();
 }
 
@@ -60,6 +64,7 @@ void Game::_sRender() {
 void Game::_sUserInput() {
     sf::Event event;
     while (_window.pollEvent(event)) {
+        ImGui::SFML::ProcessEvent(_window, event);
         switch (event.type) {
             case sf::Event::Closed:
                 _window.close();
@@ -157,8 +162,8 @@ void Game::_spawnEnemy() {
     auto entity = _entityManager.addEntity(tag);
     int radius = 35;
     auto randPoints = rand() % (6 + 1);
-    auto randX = rand() % (500 + 1 - radius);
-    auto randY = rand() % (500 + 1 - radius);
+    auto randX = rand() % (500 + 1 - radius * 2) + radius;
+    auto randY = rand() % (500 + 1 - radius * 2) + radius;
     // transform component
     entity->cTransform = std::make_shared<CTransform>(Vec2(randX, randY), Vec2(1, 2.3), 5);
     auto bgColor = sf::Color(100, 150, 100);
@@ -180,4 +185,85 @@ void Game::_sCollision() {
             e->cTransform->vel.y *= -1;
         }
     }
+}
+
+void Game::_sGUI() {
+    ImGui::SFML::Update(_window, _deltaClock.restart());
+    ImGui::Begin("Test");
+    ImGui::BeginTabBar("");
+    ImGui::BeginTabItem("Entities");
+    if (ImGui::CollapsingHeader("All")) {
+        for (auto &e: _entityManager.entities()) {
+            ImGui::BeginGroup();
+            auto color = e->cShape->circle.getFillColor();
+            auto r = (float) color.r / 255;
+            auto g = (float) color.g / 255;
+            auto b = (float) color.b / 255;
+            ImGui::ColorButton("test", ImVec4(r,g,b,1));
+            ImGui::SameLine();
+            ImGui::Text("%zu", e->id());
+            ImGui::SameLine();
+            ImGui::Text("%s", e->tag().c_str());
+            ImGui::SameLine();
+            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+            ImGui::EndGroup();
+        }
+    }
+    if (ImGui::CollapsingHeader("Bullets")) {
+        std::string bulletTag = "bullet";
+        for (auto &e: _entityManager.entities(bulletTag)) {
+            ImGui::BeginGroup();
+            auto color = e->cShape->circle.getFillColor();
+            auto r = (float) color.r / 255;
+            auto g = (float) color.g / 255;
+            auto b = (float) color.b / 255;
+            ImGui::ColorButton("test", ImVec4(r,g,b,1));
+            ImGui::SameLine();
+            ImGui::Text("%zu", e->id());
+            ImGui::SameLine();
+            ImGui::Text("%s", e->tag().c_str());
+            ImGui::SameLine();
+            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+            ImGui::EndGroup();
+        }
+    }
+    if (ImGui::CollapsingHeader("Player")) {
+        std::string playerTag = "player";
+        for (auto &e: _entityManager.entities(playerTag)) {
+            ImGui::BeginGroup();
+            auto color = e->cShape->circle.getFillColor();
+            auto r = (float) color.r / 255;
+            auto g = (float) color.g / 255;
+            auto b = (float) color.b / 255;
+            ImGui::ColorButton("test", ImVec4(r,g,b,1));
+            ImGui::SameLine();
+            ImGui::Text("%zu", e->id());
+            ImGui::SameLine();
+            ImGui::Text("%s", e->tag().c_str());
+            ImGui::SameLine();
+            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+            ImGui::EndGroup();
+        }
+    }
+    if (ImGui::CollapsingHeader("Enemies")) {
+        std::string enemyTag = "enemy";
+        for (auto &e: _entityManager.entities(enemyTag)) {
+            ImGui::BeginGroup();
+            auto color = e->cShape->circle.getFillColor();
+            auto r = (float) color.r / 255;
+            auto g = (float) color.g / 255;
+            auto b = (float) color.b / 255;
+            ImGui::ColorButton("test", ImVec4(r,g,b,1));
+            ImGui::SameLine();
+            ImGui::Text("%zu", e->id());
+            ImGui::SameLine();
+            ImGui::Text("%s", e->tag().c_str());
+            ImGui::SameLine();
+            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+            ImGui::EndGroup();
+        }
+    }
+    ImGui::EndTabItem();
+    ImGui::EndTabBar();
+    ImGui::End();
 }
