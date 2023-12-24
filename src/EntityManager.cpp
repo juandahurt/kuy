@@ -31,12 +31,11 @@ void EntityManager::_deleteDeadEntities() {
     }
 
     for (auto &map : _entitiesMap) {
-        auto entityVector = map.second;
-        auto vectorPos = entityVector.begin();
-        for (auto &e: entityVector) {
+        auto vectorPos = map.second.begin();
+        for (auto &e: map.second) {
             if (e == nullptr) continue;
             if (!e->isActive()) {
-                entityVector.erase(vectorPos);
+                map.second.erase(vectorPos);
             }
             vectorPos++;
         }
