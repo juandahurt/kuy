@@ -26,6 +26,8 @@ public:
     void operator /= (const float val);
 
     float dist(const Vec2 &rhs) const;
+    void normalize();
+    float length();
 };
 
 #endif //KUY_VEC2_H
