@@ -16,6 +16,11 @@ struct {
     int height;
 } typedef WindowConfig;
 
+struct {
+    float vel;
+    float radius;
+} typedef BulletConfig;
+
 class Game {
     sf::RenderWindow            _window;
     bool                        _running                = true;
@@ -26,6 +31,7 @@ class Game {
     int                         _lastFrameEnemySpawned  = 0;
     sf::Clock                   _deltaClock;
     WindowConfig                _windowConfig;
+    BulletConfig                _bulletConfig;
 
     void _init();
     void _spawnPlayer();

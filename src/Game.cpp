@@ -17,6 +17,10 @@ void Game::_init() {
       .width = 1080,
       .height = 720
     };
+    _bulletConfig = {
+        .vel = 4,
+        .radius = 5
+    };
 
     _window.create(sf::VideoMode(_windowConfig.width, _windowConfig.height), "Test");
     _window.setFramerateLimit(60);
@@ -126,28 +130,21 @@ void Game::_spawnBullet(std::shared_ptr<Entity> entity, Vec2 target) {
     auto pos = entity->cTransform->pos;
     auto vel = target - pos;
     vel.normalize();
-    vel *= 2; // TODO: set proper velocity constant
+    vel *= _bulletConfig.vel;
     bullet->cTransform = std::make_shared<CTransform>(pos, vel, 0);
     auto bgColor = sf::Color(255, 255, 255);
     auto outlineColor = sf::Color(100, 100, 200, 0);
     // shape component
-    bullet->cShape = std::make_shared<CShape>(5.f, 9, bgColor, outlineColor, 0.0f);
+    bullet->cShape = std::make_shared<CShape>(_bulletConfig.radius, 9, bgColor, outlineColor, 0.0f);
     // lifespan component
     bullet->cLifespan = std::make_shared<CLifespan>(90);
 }
 
 void Game::_sMovement() {
-    _player->cTransform->pos += _player->cTransform->vel;
-    std::string enemyTag = "enemy";
-    for (auto &e : _entityManager.entities(enemyTag)) {
+    for (auto &e : _entityManager.entities()) {
         if (e->cTransform == nullptr) continue;
         e->cTransform->pos += e->cTransform->vel;
         e->cTransform->angle++;
-    }
-    std::string bulletTag = "bullet";
-    for (auto &e : _entityManager.entities(bulletTag)) {
-        if (e->cTransform == nullptr) continue;
-        e->cTransform->pos += e->cTransform->vel;
         if (e->cLifespan == nullptr) continue;
         auto color = e->cShape->circle.getFillColor();
         color.a = ((float) e->cLifespan->remaining) / (float) e->cLifespan->total * 255.f;
