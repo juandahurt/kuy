@@ -21,6 +21,12 @@ struct {
     float radius;
 } typedef BulletConfig;
 
+struct {
+    int spawnRate;
+    float radius;
+    float collisionRadius;
+} typedef EnemyConfig;
+
 class Game {
     sf::RenderWindow            _window;
     bool                        _running                = true;
@@ -32,6 +38,7 @@ class Game {
     sf::Clock                   _deltaClock;
     WindowConfig                _windowConfig;
     BulletConfig                _bulletConfig;
+    EnemyConfig                 _enemyConfig;
 
     void _init();
     void _spawnPlayer();
