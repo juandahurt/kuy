@@ -7,12 +7,18 @@
 #include <cstdlib>
 
 Game::Game() {
+    _entityManager = EntityManager();
     _init();
 }
 
 void Game::_init() {
-    _entityManager = EntityManager();
-    _window.create(sf::VideoMode(1080, 720), "Test");
+    // TODO: read window config from config file
+    _windowConfig = {
+      .width = 1080,
+      .height = 720
+    };
+
+    _window.create(sf::VideoMode(_windowConfig.width, _windowConfig.height), "Test");
     _window.setFramerateLimit(60);
     ImGui::SFML::Init(_window);
     _spawnPlayer();
@@ -52,7 +58,7 @@ void Game::_sRender() {
             auto circle = e->cShape->circle;
             auto position = e->cTransform->pos;
             circle.setPosition(position.x, position.y);
-            circle.setRotation(e->cTransform->angle++);
+            circle.setRotation(e->cTransform->angle);
             _window.draw(circle);
         }
     }
@@ -121,11 +127,11 @@ void Game::_spawnBullet(std::shared_ptr<Entity> entity, Vec2 target) {
     auto vel = target - pos;
     vel.normalize();
     vel *= 2; // TODO: set proper velocity constant
-    bullet->cTransform = std::make_shared<CTransform>(Vec2(pos.x, pos.y), vel, 0);
+    bullet->cTransform = std::make_shared<CTransform>(pos, vel, 0);
     auto bgColor = sf::Color(255, 255, 255);
     auto outlineColor = sf::Color(100, 100, 200, 0);
     // shape component
-    bullet->cShape = std::make_shared<CShape>(10.0f, 5, bgColor, outlineColor, 2.0f);
+    bullet->cShape = std::make_shared<CShape>(5.f, 9, bgColor, outlineColor, 0.0f);
     // lifespan component
     bullet->cLifespan = std::make_shared<CLifespan>(90);
 }
@@ -136,6 +142,7 @@ void Game::_sMovement() {
     for (auto &e : _entityManager.entities(enemyTag)) {
         if (e->cTransform == nullptr) continue;
         e->cTransform->pos += e->cTransform->vel;
+        e->cTransform->angle++;
     }
     std::string bulletTag = "bullet";
     for (auto &e : _entityManager.entities(bulletTag)) {
@@ -151,7 +158,7 @@ void Game::_sMovement() {
 }
 
 void Game::_sEnemySpawner() {
-    if (_frameCount - _lastFrameEnemySpawned == 60) {
+    if (_frameCount - _lastFrameEnemySpawned == 90) {
         _lastFrameEnemySpawned = _frameCount;
         _spawnEnemy();
     }
@@ -161,13 +168,13 @@ void Game::_spawnEnemy() {
     std::string tag = "enemy";
     auto entity = _entityManager.addEntity(tag);
     int radius = 35;
-    auto randPoints = rand() % (6 + 1);
+    auto randPoints = rand() % (6 + 3);
     auto randX = rand() % (500 + 1 - radius * 2) + radius;
     auto randY = rand() % (500 + 1 - radius * 2) + radius;
     // transform component
     entity->cTransform = std::make_shared<CTransform>(Vec2(randX, randY), Vec2(1, 2.3), 5);
-    auto bgColor = sf::Color(100, 150, 100);
-    auto outlineColor = sf::Color(100, 100, 200);
+    auto bgColor = sf::Color(100, rand() % (255 + 1) , 100);
+    auto outlineColor = sf::Color(100, 100, 200, 0);
     // shape component
     entity->cShape = std::make_shared<CShape>(10.0f, randPoints, bgColor, outlineColor, 2.0f);
 }
@@ -178,10 +185,11 @@ void Game::_sCollision() {
     for (auto &e : _entityManager.entities(enemyTag)) {
         if (e->cTransform == nullptr) continue;
         auto pos = e->cTransform->pos;
-        if (pos.x > 500 || pos.x < 0) {
+        //.TODO: use the collision radius to check the collision, not only its position
+        if (pos.x > (float)_windowConfig.width || pos.x < 0) {
             e->cTransform->vel.x *= -1;
         }
-        if (pos.y < 0 || pos.y > 500) {
+        if (pos.y < 0 || pos.y > (float)_windowConfig.height) {
             e->cTransform->vel.y *= -1;
         }
     }

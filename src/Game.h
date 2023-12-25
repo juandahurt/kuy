@@ -11,6 +11,11 @@
 #include "imgui/imgui.h"
 #include "imgui-SFML/imgui-SFML.h"
 
+struct {
+    int width;
+    int height;
+} typedef WindowConfig;
+
 class Game {
     sf::RenderWindow            _window;
     bool                        _running                = true;
@@ -20,6 +25,7 @@ class Game {
     int                         _frameCount             = 0;
     int                         _lastFrameEnemySpawned  = 0;
     sf::Clock                   _deltaClock;
+    WindowConfig                _windowConfig;
 
     void _init();
     void _spawnPlayer();
