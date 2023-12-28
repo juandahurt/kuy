@@ -41,6 +41,8 @@ class Game {
     WindowConfig                _windowConfig;
     BulletConfig                _bulletConfig;
     EnemyConfig                 _enemyConfig;
+    bool                        _collisionEnabled       = true;
+    bool                        _enemySpawnerEnabled   = true;
 
     void _init();
     void _spawnPlayer();

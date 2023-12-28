@@ -55,9 +55,11 @@ void Game::run() {
     while (_running) {
         _entityManager.update();
         _sUserInput();
-        _sEnemySpawner();
+        if (_enemySpawnerEnabled)
+            _sEnemySpawner();
         _sMovement();
-        _sCollision();
+        if (_collisionEnabled)
+            _sCollision();
         _sGUI();
         _sRender();
         _frameCount++;
@@ -166,7 +168,7 @@ void Game::_sMovement() {
 }
 
 void Game::_sEnemySpawner() {
-    if (_frameCount - _lastFrameEnemySpawned == _enemyConfig.spawnRate) {
+    if (_frameCount - _lastFrameEnemySpawned >= _enemyConfig.spawnRate) {
         _lastFrameEnemySpawned = _frameCount;
         _spawnEnemy();
     }
@@ -249,79 +251,84 @@ void Game::_sGUI() {
     ImGui::SFML::Update(_window, _deltaClock.restart());
     ImGui::Begin("Test");
     ImGui::BeginTabBar("");
-    ImGui::BeginTabItem("Entities");
-    if (ImGui::CollapsingHeader("All")) {
-        for (auto &e: _entityManager.entities()) {
-            ImGui::BeginGroup();
-            auto color = e->cShape->circle.getFillColor();
-            auto r = (float) color.r / 255;
-            auto g = (float) color.g / 255;
-            auto b = (float) color.b / 255;
-            ImGui::ColorButton("test", ImVec4(r,g,b,1));
-            ImGui::SameLine();
-            ImGui::Text("%zu", e->id());
-            ImGui::SameLine();
-            ImGui::Text("%s", e->tag().c_str());
-            ImGui::SameLine();
-            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
-            ImGui::EndGroup();
+    if (ImGui::BeginTabItem("Entities")) {
+        if (ImGui::CollapsingHeader("All")) {
+            for (auto &e: _entityManager.entities()) {
+                ImGui::BeginGroup();
+                auto color = e->cShape->circle.getFillColor();
+                auto r = (float) color.r / 255;
+                auto g = (float) color.g / 255;
+                auto b = (float) color.b / 255;
+                ImGui::ColorButton("test", ImVec4(r,g,b,1));
+                ImGui::SameLine();
+                ImGui::Text("%zu", e->id());
+                ImGui::SameLine();
+                ImGui::Text("%s", e->tag().c_str());
+                ImGui::SameLine();
+                ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+                ImGui::EndGroup();
+            }
         }
-    }
-    if (ImGui::CollapsingHeader("Bullets")) {
-        std::string bulletTag = "bullet";
-        for (auto &e: _entityManager.entities(bulletTag)) {
-            ImGui::BeginGroup();
-            auto color = e->cShape->circle.getFillColor();
-            auto r = (float) color.r / 255;
-            auto g = (float) color.g / 255;
-            auto b = (float) color.b / 255;
-            ImGui::ColorButton("test", ImVec4(r,g,b,1));
-            ImGui::SameLine();
-            ImGui::Text("%zu", e->id());
-            ImGui::SameLine();
-            ImGui::Text("%s", e->tag().c_str());
-            ImGui::SameLine();
-            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
-            ImGui::EndGroup();
+        if (ImGui::CollapsingHeader("Bullets")) {
+            std::string bulletTag = "bullet";
+            for (auto &e: _entityManager.entities(bulletTag)) {
+                ImGui::BeginGroup();
+                auto color = e->cShape->circle.getFillColor();
+                auto r = (float) color.r / 255;
+                auto g = (float) color.g / 255;
+                auto b = (float) color.b / 255;
+                ImGui::ColorButton("test", ImVec4(r,g,b,1));
+                ImGui::SameLine();
+                ImGui::Text("%zu", e->id());
+                ImGui::SameLine();
+                ImGui::Text("%s", e->tag().c_str());
+                ImGui::SameLine();
+                ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+                ImGui::EndGroup();
+            }
         }
-    }
-    if (ImGui::CollapsingHeader("Player")) {
-        std::string playerTag = "player";
-        for (auto &e: _entityManager.entities(playerTag)) {
-            ImGui::BeginGroup();
-            auto color = e->cShape->circle.getFillColor();
-            auto r = (float) color.r / 255;
-            auto g = (float) color.g / 255;
-            auto b = (float) color.b / 255;
-            ImGui::ColorButton("test", ImVec4(r,g,b,1));
-            ImGui::SameLine();
-            ImGui::Text("%zu", e->id());
-            ImGui::SameLine();
-            ImGui::Text("%s", e->tag().c_str());
-            ImGui::SameLine();
-            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
-            ImGui::EndGroup();
+        if (ImGui::CollapsingHeader("Player")) {
+            std::string playerTag = "player";
+            for (auto &e: _entityManager.entities(playerTag)) {
+                ImGui::BeginGroup();
+                auto color = e->cShape->circle.getFillColor();
+                auto r = (float) color.r / 255;
+                auto g = (float) color.g / 255;
+                auto b = (float) color.b / 255;
+                ImGui::ColorButton("test", ImVec4(r,g,b,1));
+                ImGui::SameLine();
+                ImGui::Text("%zu", e->id());
+                ImGui::SameLine();
+                ImGui::Text("%s", e->tag().c_str());
+                ImGui::SameLine();
+                ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+                ImGui::EndGroup();
+            }
         }
-    }
-    if (ImGui::CollapsingHeader("Enemies")) {
-        std::string enemyTag = "enemy";
-        for (auto &e: _entityManager.entities(enemyTag)) {
-            ImGui::BeginGroup();
-            auto color = e->cShape->circle.getFillColor();
-            auto r = (float) color.r / 255;
-            auto g = (float) color.g / 255;
-            auto b = (float) color.b / 255;
-            ImGui::ColorButton("test", ImVec4(r,g,b,1));
-            ImGui::SameLine();
-            ImGui::Text("%zu", e->id());
-            ImGui::SameLine();
-            ImGui::Text("%s", e->tag().c_str());
-            ImGui::SameLine();
-            ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
-            ImGui::EndGroup();
+        if (ImGui::CollapsingHeader("Enemies")) {
+            std::string enemyTag = "enemy";
+            for (auto &e: _entityManager.entities(enemyTag)) {
+                ImGui::BeginGroup();
+                auto color = e->cShape->circle.getFillColor();
+                auto r = (float) color.r / 255;
+                auto g = (float) color.g / 255;
+                auto b = (float) color.b / 255;
+                ImGui::ColorButton("test", ImVec4(r,g,b,1));
+                ImGui::SameLine();
+                ImGui::Text("%zu", e->id());
+                ImGui::SameLine();
+                ImGui::Text("%s", e->tag().c_str());
+                ImGui::SameLine();
+                ImGui::Text("%.f %.f", e->cTransform->pos.x, e->cTransform->pos.y);
+                ImGui::EndGroup();
+            }
         }
     }
     ImGui::EndTabItem();
+    if (ImGui::BeginTabItem("Systems")) {
+        ImGui::Checkbox("Collision", &_collisionEnabled);
+        ImGui::Checkbox("EnemySpawn", &_enemySpawnerEnabled);
+    }
     ImGui::EndTabBar();
     ImGui::End();
 }
