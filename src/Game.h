@@ -25,6 +25,8 @@ struct {
     int spawnRate;
     float radius;
     float collisionRadius;
+    float smallEnemiesProportion;
+    float smallEnemyVelocity;
 } typedef EnemyConfig;
 
 class Game {
@@ -47,6 +49,7 @@ class Game {
     void _sUserInput();
     void _sRender();
     void _spawnEnemy();
+    void _spawnSmallEnemies(std::shared_ptr<Entity> &enemy);
     void _sEnemySpawner();
     void _sCollision();
     void _sGUI();

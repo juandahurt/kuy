@@ -23,7 +23,9 @@ void Game::_init() {
     _enemyConfig = {
         .spawnRate = 60,
         .radius = 10.f,
-        .collisionRadius = 10.f
+        .collisionRadius = 10.f,
+        .smallEnemiesProportion = 0.9f,
+        .smallEnemyVelocity = 4
     };
 
     _window.create(sf::VideoMode(_windowConfig.width, _windowConfig.height), "Test");
@@ -170,6 +172,29 @@ void Game::_sEnemySpawner() {
     }
 }
 
+void Game::_spawnSmallEnemies(std::shared_ptr<Entity> &enemy) {
+    auto amount = enemy->cShape->circle.getPointCount();
+    auto location = enemy->cTransform->pos;
+    float step = 360.f / (float)amount;
+    float angle = step;
+    float vel = _enemyConfig.smallEnemyVelocity;
+    float radius = enemy->cShape->circle.getRadius() * _enemyConfig.smallEnemiesProportion;
+    for (int current = 0; current < amount; current++) {
+        auto x = sinf(angle) * vel;
+        auto y = cosf(angle) * vel;
+        std::string entityTag = "enemy";
+        auto smallEnemy = _entityManager.addEntity(entityTag);
+        smallEnemy->cTransform = std::make_shared<CTransform>(location, Vec2(x, y), 0);
+        auto outlineColor = sf::Color(100, 100, 230, 1);
+        auto fillColor = enemy->cShape->circle.getFillColor();
+        // shape component
+        smallEnemy->cShape = std::make_shared<CShape>(radius, amount, fillColor, outlineColor, 2.0f);
+        smallEnemy->cCollision = std::make_shared<CCollision>(5);
+        smallEnemy->cLifespan = std::make_shared<CLifespan>(20);
+        angle += step;
+    }
+}
+
 void Game::_spawnEnemy() {
     std::string tag = "enemy";
     auto entity = _entityManager.addEntity(tag);
@@ -190,18 +215,21 @@ void Game::_spawnEnemy() {
 void Game::_sCollision() {
     std::string bulletTag = "bullet";
     for (auto &b : _entityManager.entities(bulletTag)) {
+        if (!b->isActive()) continue;
         std::string enemyTag = "enemy";
         // iterate through all enemies
         for (auto &e : _entityManager.entities(enemyTag)) {
             if (e->cTransform == nullptr) continue;
+            if (!e->isActive()) continue;
             auto delta = e->cTransform->pos - b->cTransform->pos;
             bool isColliding;
             auto enemyRadius = e->cCollision->radius;
             auto bulletRadius = b->cCollision->radius;
             isColliding = delta.x * delta.x + delta.y * delta.y <= (enemyRadius + bulletRadius) * (enemyRadius + bulletRadius);
             if (isColliding) {
-                e->destroy();
                 b->destroy();
+                e->destroy();
+                _spawnSmallEnemies(e);
             }
         }
     }
