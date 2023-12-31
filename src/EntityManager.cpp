@@ -54,8 +54,12 @@ EntityVec &EntityManager::entities() {
 }
 
 
-std::shared_ptr<Entity> EntityManager::addEntity(std::string &tag) {
-    auto entity = std::make_shared<Entity>(_totalEntities++, tag);
+Entity* EntityManager::addEntity(std::string &tag) {
+    auto components = ComponentTuple(
+            CTransform(Vec2(0, 0), Vec2(0, 0), 0),
+            CLifespan(0)
+            );
+    auto entity = new Entity(_totalEntities++, tag, components);
     _entitiesToAdd.push_back(entity);
     return entity;
 }

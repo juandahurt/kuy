@@ -6,30 +6,57 @@
 #define KUY_ENTITY_H
 
 #include <iostream>
+#include <tuple>
 #include "Components.h"
+
+typedef std::tuple<
+        CTransform,
+        CLifespan
+        > ComponentTuple;
+
+class EntityManager;
 
 class Entity {
     friend class EntityManager;
+
     bool _active;
     size_t _id;
     std::string _tag;
-public:
-    Entity(const size_t i, std::string &t)
-        : _id (i), _tag (t) {
+    ComponentTuple _components;
+
+    Entity(const size_t &id, std::string &tag, ComponentTuple &components) : _components(components) {
         _active = true;
+        _id = id;
+        _tag = tag;
     }
-
-    std::shared_ptr<CTransform> cTransform;
-    std::shared_ptr<CShape> cShape;
-    std::shared_ptr<CCollision> cCollision;
-    std::shared_ptr<CInput> cInput;
-    std::shared_ptr<CScore> cScore;
-    std::shared_ptr<CLifespan> cLifespan;
-
+public:
     size_t id() const;
     std::string& tag();
     bool isActive() const;
     void destroy();
+
+    template <typename T>
+    bool hasComponent() {
+        return getComponent<T>().exists;
+    }
+
+    template <typename T, typename... TArgs>
+    void addComponent(TArgs&&... args) {
+        auto& component = getComponent<T>();
+        component = T(std::forward<TArgs>(args)...);
+        component.exists = true;
+    }
+
+    template <typename T>
+    T& getComponent() {
+        return std::get<T>(_components);
+    }
+
+    template <typename T>
+    void removeComponent() {
+        auto &component = std::get<T>();
+        component.exists = false;
+    }
 };
 
 #endif //KUY_ENTITY_H
