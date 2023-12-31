@@ -1,8 +1,7 @@
-
-#include "Game.h"
+#include "Kuy.h"
 
 int main() {
-    auto game = Game();
+    auto game = Kuy();
     game.run();
     return 0;
 }
