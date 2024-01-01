@@ -6,7 +6,7 @@
 #define KUY_SCENE_H
 
 #include "EntityManager.h"
-#include "Kuy.h"
+#include "Action.h"
 #include <map>
 #include <string>
 
@@ -14,9 +14,11 @@
 
 typedef std::map<int, std::string> ActionMap;
 
+class Kuy;
+
 class Scene {
 protected:
-//    Kuy*            _engine;
+    Kuy*            _engine;
     EntityManager   _entityManager;
     bool            _paused;
     size_t          _currentFrame;
@@ -25,14 +27,15 @@ protected:
     virtual void onEnd() = 0;
 
 public:
-    Scene();
-//    Scene(Kuy* engine);
+    Scene(Kuy* engine);
+    virtual ~Scene();
 
     virtual void update() = 0;
-    virtual void executeAction() = 0; // TODO: create action class
+    virtual void executeAction(const Action &action) = 0; // TODO: create action class
     virtual void render() = 0;
 
     void registerAction(int inputKey, const std::string &name);
+    const std::string* action(int inputKey);
 };
 
 

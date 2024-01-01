@@ -6,6 +6,7 @@
 #define KUY_KUY_H
 
 #include "Scene.h"
+
 #include <string>
 #include <map>
 #include <SFML/Graphics.hpp>
@@ -27,8 +28,10 @@ protected:
     void _checkUserInput();
 public:
     Kuy();
+    virtual ~Kuy();
 
-//    void change_scene(const std::string & name, Scene &scene, bool endCurrent = false);
+    sf::RenderWindow* window();
+    void changeScene(const std::string & name, Scene *scene, bool endCurrent = false);
 //    void quit();
     void run();
 //    bool isRunning();
