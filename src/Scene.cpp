@@ -24,3 +24,7 @@ const std::string* Scene::action(int inputKey) {
     }
     return &_actionMap[inputKey];
 }
+
+void Scene::onEnd() {
+    // TODO: add end logic
+}

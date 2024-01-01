@@ -18,20 +18,21 @@ typedef std::map<std::string, Scene*> SceneMap;
 class Kuy {
 protected:
     sf::RenderWindow    _window;
-    std::string         _currentScene;
+    std::string         _currScene;
     size_t              _simulationSpeed;
     bool                _running;
     SceneMap            _scenes;
 
-    Scene* currentScene();
-//    void _update();
+    Scene* _currentScene();
     void _checkUserInput();
 public:
     Kuy();
     virtual ~Kuy();
 
     sf::RenderWindow* window();
-    void changeScene(const std::string & name, Scene *scene, bool endCurrent = false);
+
+    void registerScene(const std::string &name, Scene *scene);
+    void changeScene(const std::string &name, bool endCurrent = false);
 //    void quit();
     void run();
 //    bool isRunning();

@@ -16,14 +16,19 @@ sf::RenderWindow* Kuy::window() {
     return &_window;
 }
 
-void Kuy::changeScene(const std::string &name, Scene *scene, bool endCurrent) {
+void Kuy::registerScene(const std::string &name, Scene *scene) {
     _scenes[name] = scene;
-    _currentScene = name;
+    _currScene = name;
+    _currentScene()->init();
+}
+
+void Kuy::changeScene(const std::string &name, bool endCurrent) {
+    _currScene = name;
     // TODO: implement end current logic
 }
 
-Scene *Kuy::currentScene() {
-    return _scenes[_currentScene];
+Scene *Kuy::_currentScene() {
+    return _scenes[_currScene];
 }
 
 void Kuy::_checkUserInput() {
@@ -34,19 +39,19 @@ void Kuy::_checkUserInput() {
         }
         if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
             std::string type = event.type == sf::Event::KeyPressed ? "START" : "END";
-            auto name = currentScene()->action(event.key.code);
+            auto name = _currentScene()->action(event.key.code);
             // if name is not null, the action is registered
-            if (name) currentScene()->executeAction(Action(*name, type));
+            if (name) _currentScene()->executeAction(Action(*name, type));
         }
     }
 }
 
 void Kuy::run() {
     while (_running) {
-        currentScene()->update();
+        _currentScene()->update();
         _window.clear();
         _checkUserInput();
-        currentScene()->render();
+        _currentScene()->render();
         _window.display();
     }
 }

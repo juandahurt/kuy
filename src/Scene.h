@@ -24,18 +24,19 @@ protected:
     size_t          _currentFrame;
     ActionMap       _actionMap;
 
-    virtual void onEnd() = 0;
-
 public:
     Scene(Kuy* engine);
     virtual ~Scene();
 
+    /// All the initialization code must be implemented in this function
+    virtual void init() = 0;
     virtual void update() = 0;
-    virtual void executeAction(const Action &action) = 0; // TODO: create action class
+    virtual void executeAction(const Action &action) = 0;
     virtual void render() = 0;
 
     void registerAction(int inputKey, const std::string &name);
     const std::string* action(int inputKey);
+    void onEnd();
 };
 
 
