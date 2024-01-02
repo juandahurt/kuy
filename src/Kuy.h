@@ -33,7 +33,7 @@ public:
 
     void registerScene(const std::string &name, Scene *scene);
     void changeScene(const std::string &name, bool endCurrent = false);
-//    void quit();
+    void quit();
     void run();
 //    bool isRunning();
 };

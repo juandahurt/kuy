@@ -35,7 +35,7 @@ void Kuy::_checkUserInput() {
     sf::Event event;
     while (_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            _running = false;
+            quit();
         }
         if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
             std::string type = event.type == sf::Event::KeyPressed ? "START" : "END";
@@ -54,6 +54,10 @@ void Kuy::run() {
         _currentScene()->render();
         _window.display();
     }
+}
+
+void Kuy::quit() {
+    _running = false;
 }
 
 Kuy::~Kuy() {

@@ -10,8 +10,6 @@
 #include <map>
 #include <string>
 
-// TODO: add getters for width, height, currentFrame
-
 typedef std::map<int, std::string> ActionMap;
 
 class Kuy;
@@ -27,6 +25,9 @@ protected:
 public:
     Scene(Kuy* engine);
     virtual ~Scene();
+
+    float width();
+    float height();
 
     /// All the initialization code must be implemented in this function
     virtual void init() = 0;

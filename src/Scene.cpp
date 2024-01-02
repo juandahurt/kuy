@@ -3,6 +3,7 @@
 //
 
 #include "Scene.h"
+#include "Kuy.h"
 
 Scene::Scene(Kuy *engine) {
     _paused = false;
@@ -12,6 +13,14 @@ Scene::Scene(Kuy *engine) {
 
 Scene::~Scene() {
     _actionMap.clear();
+}
+
+float Scene::width() {
+    return (float)_engine->window()->getSize().x;
+}
+
+float Scene::height() {
+    return (float)_engine->window()->getSize().y;
 }
 
 void Scene::registerAction(int inputKey, const std::string &name) {
