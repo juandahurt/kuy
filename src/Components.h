@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vec2.h"
+#include "Animation.h"
 
 #ifndef KUY_COMPONENTS_H
 #define KUY_COMPONENTS_H
@@ -23,10 +24,20 @@ public:
     Vec2 vel;
     float angle;
 
-    CTransform(const Vec2 &p, const Vec2 &v, float a = 0)
+    CTransform(const Vec2 &p, const Vec2 &v = Vec2(0, 0), float a = 0)
         : pos (p), vel (v), angle (a) {}
 };
 
+class CAnimation : public Component {
+    bool        repeats;
+
+public:
+    Animation*   animation;
+
+    CAnimation(Animation*  animation, bool repeats) : animation(animation), repeats(repeats) {}
+};
+
+// TODO: remove unnecessary ones
 class CShape {
 public:
     sf::CircleShape circle;

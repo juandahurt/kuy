@@ -11,7 +11,8 @@
 
 typedef std::tuple<
         CTransform,
-        CLifespan
+        CLifespan,
+        CAnimation
         > ComponentTuple;
 
 class EntityManager;
