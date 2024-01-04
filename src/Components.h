@@ -5,20 +5,46 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vec2.h"
+#include "Animation.h"
 
 #ifndef KUY_COMPONENTS_H
 #define KUY_COMPONENTS_H
 
-class CTransform {
-public:
-    Vec2 pos    = { 0.0, 0.0 };
-    Vec2 vel    = { 0.0, 0.0 };
-    float angle = 0.0;
+// TODO: implement bounding box, animation, etc
 
-    CTransform(const Vec2 &p, const Vec2 &v, float a)
+/// Base Component class
+class Component {
+public:
+    bool exists = false;
+};
+
+class CTransform : public Component {
+public:
+    Vec2 pos;
+    Vec2 vel;
+    float angle;
+
+    CTransform(const Vec2 &p, const Vec2 &v = Vec2(0, 0), float a = 0)
         : pos (p), vel (v), angle (a) {}
 };
 
+class CAnimation : public Component {
+    bool repeats;
+
+public:
+    Animation* animation;
+
+    CAnimation(Animation*  animation, bool repeats) : animation(animation), repeats(repeats) {}
+};
+
+class CBoundingBox : public Component {
+public:
+    Vec2 size;
+
+    CBoundingBox(Vec2 size) : size(size) {}
+};
+
+// TODO: remove unnecessary ones
 class CShape {
 public:
     sf::CircleShape circle;
@@ -50,7 +76,7 @@ public:
 };
 
 /// The lifespan unit represents one frame.
-class CLifespan {
+class CLifespan : public Component {
 public:
     int remaining = 0;
     int total     = 0;
