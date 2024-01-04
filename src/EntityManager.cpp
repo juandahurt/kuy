@@ -56,7 +56,7 @@ EntityVec &EntityManager::entities() {
 
 Entity* EntityManager::addEntity(std::string &tag) {
     // TODO: improve component tuple init
-    auto animation = new Animation((std::string)"", 0, 0);
+    auto animation = Animation((std::string)"", 0, 0);
     auto components = ComponentTuple(
             CTransform(Vec2(0, 0), Vec2(0, 0), 0),
             CLifespan(0),
