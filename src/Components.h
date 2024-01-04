@@ -32,9 +32,12 @@ class CAnimation : public Component {
     bool repeats;
 
 public:
-    Animation* animation;
+    Animation animation;
 
-    CAnimation(Animation*  animation, bool repeats) : animation(animation), repeats(repeats) {}
+    CAnimation(Animation &animation, bool repeats) : animation(animation), repeats(repeats) {}
+    ~CAnimation() {
+
+    }
 };
 
 class CBoundingBox : public Component {

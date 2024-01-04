@@ -15,13 +15,11 @@ class Animation {
     int _frames;
     /// Number of frame on which the animation has been alive
     int _framesAlive;
-    /// The texture which in which the animation is
-    sf::Texture _texture;
 public:
     /// The actual sprite
     sf::Sprite sprite;
 
-    Animation(std::string pathToTexture, int duration, int frames);
+    Animation(sf::Texture &texture, int duration, int frames);
     ~Animation();
 
     void update();

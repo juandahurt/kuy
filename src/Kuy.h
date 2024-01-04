@@ -6,6 +6,7 @@
 #define KUY_KUY_H
 
 #include "Scene.h"
+#include "Assets.h"
 
 #include <string>
 #include <map>
@@ -22,6 +23,7 @@ protected:
     size_t              _simulationSpeed;
     bool                _running;
     SceneMap            _scenes;
+    Assets              _assets;
 
     Scene* _currentScene();
     void _checkUserInput();
@@ -35,6 +37,7 @@ public:
     void changeScene(const std::string &name, bool endCurrent = false);
     void quit();
     void run();
+    Assets getAssets();
 //    bool isRunning();
 };
 

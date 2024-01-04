@@ -6,6 +6,7 @@
 
 Kuy::Kuy() {
     // TODO: set window values from config file
+    _assets = Assets();
     _running = true;
     _window.create(sf::VideoMode(1080, 720), "Test");
     _window.setFramerateLimit(60);
@@ -58,6 +59,11 @@ void Kuy::run() {
 
 void Kuy::quit() {
     _running = false;
+}
+
+Assets Kuy::getAssets() {
+    return
+    _assets;
 }
 
 Kuy::~Kuy() {
