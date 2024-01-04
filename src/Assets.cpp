@@ -13,3 +13,12 @@ void Assets::addAnimation(int id, Animation *animation) {
 Animation& Assets::getAnimation(int id) {
     return *_animations[id];
 }
+
+void Assets::addTexture(int id, std::string path) {
+    _textures[id] = new sf::Texture();
+    _textures[id]->loadFromFile(path);
+}
+
+sf::Texture &Assets::texture(int id) {
+    return *_textures[id];
+}
