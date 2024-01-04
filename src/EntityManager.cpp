@@ -60,7 +60,8 @@ Entity* EntityManager::addEntity(std::string &tag) {
     auto components = ComponentTuple(
             CTransform(Vec2(0, 0), Vec2(0, 0), 0),
             CLifespan(0),
-            CAnimation(animation, false)
+            CAnimation(animation, false),
+            CBoundingBox(Vec2(0, 0))
             );
     auto entity = new Entity(_totalEntities++, tag, components);
     _entitiesToAdd.push_back(entity);

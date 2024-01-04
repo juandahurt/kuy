@@ -29,12 +29,19 @@ public:
 };
 
 class CAnimation : public Component {
-    bool        repeats;
+    bool repeats;
 
 public:
-    Animation*   animation;
+    Animation* animation;
 
     CAnimation(Animation*  animation, bool repeats) : animation(animation), repeats(repeats) {}
+};
+
+class CBoundingBox : public Component {
+public:
+    Vec2 size;
+
+    CBoundingBox(Vec2 size) : size(size) {}
 };
 
 // TODO: remove unnecessary ones
