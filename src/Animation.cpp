@@ -3,12 +3,12 @@
 //
 
 #include "Animation.h"
-#include <iostream>
 
-Animation::Animation(sf::Texture &texture, int duration, int frames) {
+Animation::Animation(sf::Texture &texture, int duration, int frames, Vec2 size) {
     _duration = duration;
     _frames = frames;
     _framesAlive = 0;
+    _size = size;
     sprite.setTexture(texture);
 }
 
@@ -18,6 +18,12 @@ Animation::~Animation() {
 
 void Animation::update() {
     int currentFrame = (_framesAlive / _duration) % _frames;
-    sprite.setTextureRect(sf::IntRect(currentFrame * 32, 0, 32, 32));
+    sprite.setTextureRect(
+            sf::IntRect(
+                    currentFrame * _size.x,
+                    0,
+                    _size.x,
+                    _size.y)
+            );
     _framesAlive++;
 }
