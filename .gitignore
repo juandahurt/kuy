@@ -3,6 +3,7 @@ bin/*
 *.o
 
 cmake-build-debug/
+CMakeFiles/
 .idea/
 
 .DS_Store
