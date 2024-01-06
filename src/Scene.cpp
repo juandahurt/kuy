@@ -4,6 +4,7 @@
 
 #include "Scene.h"
 #include "Kuy.h"
+#include "Plugin.h"
 
 Scene::Scene(Kuy *engine) {
     _paused = false;
@@ -13,6 +14,7 @@ Scene::Scene(Kuy *engine) {
 
 Scene::~Scene() {
     _actionMap.clear();
+    _plugins.clear();
 }
 
 float Scene::width() {
@@ -32,6 +34,22 @@ const std::string* Scene::action(int inputKey) {
         return nullptr;
     }
     return &_actionMap[inputKey];
+}
+
+void Scene::addPlugin(const std::string& id, Plugin* plugin) {
+    _plugins[id] = plugin;
+    plugin->scene = this;
+}
+
+Plugin* Scene::getPlugin(const std::string &id) {
+    auto plugin = _plugins.find(id);
+    if (plugin == _plugins.end())
+        return nullptr;
+    return plugin->second;
+}
+
+void Scene::render(const sf::Drawable& element) {
+    _engine->window()->draw(element);
 }
 
 void Scene::onEnd() {
