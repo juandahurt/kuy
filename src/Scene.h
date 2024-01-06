@@ -9,10 +9,14 @@
 #include "Action.h"
 #include <map>
 #include <string>
+#include <vector>
+
+class Plugin;
+class Kuy;
 
 typedef std::map<int, std::string> ActionMap;
+typedef std::map<std::string, Plugin*> PluginVec;
 
-class Kuy;
 
 class Scene {
 protected:
@@ -21,6 +25,7 @@ protected:
     bool            _paused;
     size_t          _currentFrame;
     ActionMap       _actionMap;
+    PluginVec       _plugins;
 
 public:
     Scene(Kuy* engine);
@@ -37,6 +42,9 @@ public:
 
     void registerAction(int inputKey, const std::string &name);
     const std::string* action(int inputKey);
+    void addPlugin(const std::string& id, Plugin* plugin);
+    void render(const sf::Drawable& element);
+    Plugin* getPlugin(const std::string &id);
     void onEnd();
 };
 
