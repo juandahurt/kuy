@@ -10,6 +10,7 @@ Animation::Animation(sf::Texture &texture, int duration, int frames, Vec2 size) 
     _framesAlive = 0;
     _size = size;
     sprite.setTexture(texture);
+    update();
 }
 
 Animation::~Animation() {
@@ -26,4 +27,8 @@ void Animation::update() {
                     _size.y)
             );
     _framesAlive++;
+}
+
+sf::Sprite &Animation::getSprite() {
+    return sprite;
 }
