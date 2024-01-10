@@ -26,7 +26,7 @@ class Entity {
     std::string _tag;
     ComponentTuple _components;
 
-    Entity(const size_t &id, std::string &tag, ComponentTuple &components) : _components(components) {
+    Entity(const size_t &id, const std::string &tag, ComponentTuple &components) : _components(components) {
         _active = true;
         _id = id;
         _tag = tag;

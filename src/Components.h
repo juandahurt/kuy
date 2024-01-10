@@ -10,8 +10,6 @@
 #ifndef KUY_COMPONENTS_H
 #define KUY_COMPONENTS_H
 
-// TODO: implement bounding box, animation, etc
-
 /// Base Component class
 class Component {
 public:
@@ -21,11 +19,13 @@ public:
 class CTransform : public Component {
 public:
     Vec2 pos;
+    Vec2 lastPos;
     Vec2 vel;
+    Vec2 scale;
     float angle;
 
-    CTransform(const Vec2 &p, const Vec2 &v = Vec2(0, 0), float a = 0)
-        : pos (p), vel (v), angle (a) {}
+    CTransform(const Vec2 &p, const Vec2 &lp = Vec2(0, 0), const Vec2 &v = Vec2(0, 0), const Vec2 &sc = Vec2(1, 1), float a = 0)
+        : pos (p), lastPos(lp), vel (v), scale(sc), angle (a) {}
 };
 
 class CAnimation : public Component {
@@ -43,40 +43,12 @@ public:
 class CBoundingBox : public Component {
 public:
     Vec2 size;
+    Vec2 center;
 
-    CBoundingBox(Vec2 size) : size(size) {}
+    CBoundingBox(Vec2 size) : size(size), center(size / 2) {}
 };
 
 // TODO: remove unnecessary ones
-class CShape {
-public:
-    sf::CircleShape circle;
-
-    CShape(float radius, int points, sf::Color &fill, sf::Color &outline, float thickness) {
-        circle = sf::CircleShape(radius, points);
-        circle.setRadius(radius);
-        circle.setFillColor(fill);
-        circle.setOutlineColor(outline);
-        circle.setOutlineThickness(thickness);
-        circle.setOrigin(radius, radius);
-    }
-};
-
-class CCollision {
-public:
-    float radius;
-
-    CCollision(float r)
-        : radius (r) {}
-};
-
-class CScore {
-public:
-    int score = 0;
-
-    CScore(int s)
-        : score (s) {}
-};
 
 /// The lifespan unit represents one frame.
 class CLifespan : public Component {

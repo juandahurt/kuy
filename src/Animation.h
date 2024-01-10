@@ -26,6 +26,7 @@ public:
     ~Animation();
 
     void update();
+    sf::Sprite& getSprite();
 };
 
 

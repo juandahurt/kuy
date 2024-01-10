@@ -54,12 +54,12 @@ EntityVec &EntityManager::entities() {
 }
 
 
-Entity* EntityManager::addEntity(std::string &tag) {
+Entity* EntityManager::addEntity(const std::string &tag) {
     // TODO: improve component tuple init
     auto t = sf::Texture();
     auto animation = Animation(t, 0, 0, Vec2(0, 0));
     auto components = ComponentTuple(
-            CTransform(Vec2(0, 0), Vec2(0, 0), 0),
+            CTransform(Vec2(0, 0)),
             CLifespan(0),
             CAnimation(animation, false),
             CBoundingBox(Vec2(0, 0))
@@ -69,7 +69,7 @@ Entity* EntityManager::addEntity(std::string &tag) {
     return entity;
 }
 
-EntityVec &EntityManager::entities(std::string &tag) {
+EntityVec &EntityManager::entities(const std::string &tag) {
     return _entitiesMap[tag];
 }
 

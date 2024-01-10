@@ -25,9 +25,9 @@ public:
     EntityManager();
 
     void update();
-    Entity* addEntity(std::string &tag);
+    Entity* addEntity(const std::string &tag);
     EntityVec& entities();
-    EntityVec& entities(std::string &tag);
+    EntityVec& entities(const std::string &tag);
     EntityMap& entitiesMap();
 };
 

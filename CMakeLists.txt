@@ -22,6 +22,8 @@ set(SOURCES
     src/Assets.h
     src/Assets.cpp
     src/Action.h
+        src/Physics.h
+        src/Physics.cpp
 )
 
 set(SFML_PATH /opt/homebrew/Cellar/sfml/2.6.1)
