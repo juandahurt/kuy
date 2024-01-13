@@ -7,6 +7,7 @@
 
 #include "Scene.h"
 #include "Assets.h"
+#include "Camera.h"
 
 #include <string>
 #include <map>
@@ -24,6 +25,7 @@ protected:
     bool                _running;
     SceneMap            _scenes;
     Assets              _assets;
+    Camera*             _camera;
 
     Scene* _currentScene();
     void _checkUserInput();
@@ -38,6 +40,8 @@ public:
     void quit();
     void run();
     Assets getAssets();
+    void setCamera(Camera* camera);
+    Camera* camera();
 //    bool isRunning();
 };
 
