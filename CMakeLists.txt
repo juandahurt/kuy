@@ -24,6 +24,8 @@ set(SOURCES
     src/Action.h
         src/Physics.h
         src/Physics.cpp
+        src/Camera.h
+        src/Camera.cpp
 )
 
 set(SFML_PATH /opt/homebrew/Cellar/sfml/2.6.1)

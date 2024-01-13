@@ -53,6 +53,9 @@ void Kuy::run() {
         _window.clear();
         _checkUserInput();
         _currentScene()->render();
+        if (_camera) {
+            _camera->update();
+        }
         _window.display();
     }
 }
@@ -62,8 +65,15 @@ void Kuy::quit() {
 }
 
 Assets Kuy::getAssets() {
-    return
-    _assets;
+    return _assets;
+}
+
+void Kuy::setCamera(Camera *camera) {
+    _camera = camera;
+}
+
+Camera *Kuy::camera() {
+    return _camera;
 }
 
 Kuy::~Kuy() {
